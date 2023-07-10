@@ -1,0 +1,271 @@
+
+ Cisco Commands 
+ Werk proces 1
+Command line
+Router> User Mode 
+Router>enable 
+Router# privileged Mode 
+Router#configure terminal 
+Router(config)# Global Configuration Mode 
+
+Show previous commands we have entered 
+Router#show history 
+
+Change the history size 
+Router#terminal history size 50 (0-256) 
+
+Change the hostname 
+Router(config)#hostname HeadOffice 
+HeadOffice(config)# 
+
+View Configurations 
+HeadOffice#show running-config 
+
+Save router configuration to NVRam 
+HeadOffice#copy running-config startup-config 
+
+Reload the router 
+HeadOffice#reload Page 2 
+
+Restore back-ups
+Om back-ups terug te zetten vul je de volgende commando’s in:
+Switch# enable
+Switch# configure terminal
+Switch(config) config-register 0x2102
+Switch(config) exit
+Switch# reload
+Nu start je het device opnieuw.
+Switch# show running-config
+Control leer of de back up is gemaakt.
+Banner MOTD message of the day 
+HeadOffice(config)#Banner motd # Verboden toegang # 
+
+Login banner 
+HeadOffice(config)#Banner login # Wel Come to the Public Router# 
+
+enable password 
+HeadOffice(config)#enable password CISCO 
+
+enable secret password 
+Router(config)#enable secret CCNA 
+
+Console password 
+HeadOffice(config)#line console 0 
+HeadOffice(config-line)#password console 
+HeadOffice(config-line)#login 
+
+encrypt passwords 
+HeadOffice(config)#service password-encryption 
+
+Stop ip domain lookup 
+HeadOffice(config)#no ip domain-lookup 
+
+Console logout time 
+HeadOffice(config)#line console 0 
+HeadOffice(config-line)#exec-timeout min sec Page 3 
+
+OSPF instellen
+Device(config)# router ospf [ID Name]
+Device(config-router)# network 192.168.129.16 0.0.0.3 area 20
+
+OSPF authentication
+R1(config)#int fa0/0
+R1(config-if)#ip ospf authentication-key secret
+R1(config-if)#ip ospf authentication
+Router#show ip ospf interface serial 2/0
+
+SSH
+Router(config)#service password-encryption
+Router(config)#ip domain-name horizoncollege.nl
+hostname R1
+crypto key generate rsa
+How many bits in the modulus [512]: 1024
+R1(config)#login block-for 180 attempts 4 within 120
+R1(config-line)#transport input ssh
+R1(config-line)#login local
+
+Stop disturbing console message when typing 
+HeadOffice(config)#line console 0 
+HeadOffice(config-line)#logging synchronous 
+
+View the date and time 
+HeadOffice#view clock 
+
+Change the timezone 
+HeadOffice(config)#clock timezone utc 5 30 
+
+Change the time 
+HeadOffice#clock set h:m:s date month year (if now time is 8 10 am we must - 5 30 from it when enter the time) 
+
+NTP Server
+Switch(config)#ntp server [IP]
+Switch(config)#ntp authenticate
+Switch(config)#ntp trusted-key 1
+Switch(config)#ntp authenticate-key 1 md5 [Password]
+
+show ntp associations
+
+ntp server [IP NTP server]
+
+Configure fastethernet interface 
+HeadOffice(config)#interface fastethernet 0/0 
+HeadOffice(config-if)#Description CONNECTION TO LAN ADMIN 
+HeadOffice(config-if)#ip address 192.168.1.1 255.255.255.0 
+HeadOffice(config-if)#no shut 
+
+Configure serial interface 
+HeadOffice(config)#interface serial 0/0/0 
+HeadOffice(config-if)#ip address 192.168.10.1 255.255.255.252 
+HeadOffice(config-if)#description WAN CONNECTION TO 2ND FLOOR 
+HeadOffice(config-if)#clock rate 64000 (DCE interface) 
+HeadOffice(config-if)#no shut Page 4 
+
+Back-up tftp
+Switch# wr mem
+Switch# copy startup-config tftp:
+Address or name of remote host []? [IP Address]
+Destination filename [Switch-confg]? [Name config file]
+
+ 
+Back-up ftp
+Switch# enable
+Switch# config t
+Switch(config)# ip ftp username [Username]
+Switch(config)# ip ftp password [Password]
+Switch# wr mem
+Switch# copy running-config ftp:
+Address or name of remote host []? [IP Address]
+Destination filename [Switch-confg]? [Name config file]
+
+DHCP Server instellen
+Router(config)#ip dhcp pool [Naam DHCP Pool]
+Router(dhcp-config)#network 192.168.0.0 255.255.255.0
+Router(dhcp-config)#default-router 192.168.0.1
+Router(dhcp-config)#dns-server 192.168.0.1 (Hoeft niet perse)
+
+Ip adressen excluden
+Router(config)#ip dhcp excluded-address 192.168.10.0 192.168.10.9
+
+View interface details 
+HeadOffice#show controllers serial 0/0/0 
+Show physcial configurations 
+HeadOffice#show version 
+
+Static route 
+HeadOffice(config)#ip route 192.168.2.0 255.255.255.0 192.168.10.1 
+(destination network) (subnetmask) (next hop address) 
+or 
+HeadOffice(config)#ip route 192.168.2.0 255.255.255.0 serial 0/0/0 
+(destination network) (subnetmask) (exit interface)
+
+VTY Lines Password
+UpaaeRouter1(config)# line vty 0 15
+paaeRouter1(line-config)# password hans
+UpaaeRouter1(line-config)#login
+Port security
+Switch(config)#int fa0/1
+Switch(config-if)#switchport mode access
+Switch(config-if)#switchport port-security
+Switch(config-if)#switchport port-security mac-address sticky
+Vlan Ip address geven
+Switch(config)#interface vlan (Vlan nummer)
+Switch(config-if)#ip address (ip) (submask)
+
+Vlan aanmaken
+Switch> Enable
+Switch# Vlan datebase 
+Switch# Vlan (nummer) name (naam die je wilt geven)
+Maak een switch primary vlan 
+Switch> Enable
+Switch# Config Terminal
+Switch(config) spanning-tree vlan (nummer) root primary
+
+VTP Instellen
+Switch> enable
+Switch# config terminal
+Switch(config) interface vlan (Vlan name)
+Switch(vlan)#vtp domain (Domain Name) (kan je in theorie zelf kiezen)
+Switch(vlan)#vtp password (password)
+Switch(vlan)#vtp {client | server | transparent}
+
+Vlans koppelen aan interface
+Switch> enable
+Switch# config terminal
+Switch(config) interface (Name)
+Switch(config-if)switchmode access vlan (nummer)
+
+ 
+Trunkpoort aanmaken
+Switch> enable
+Switch# config terminal
+Switch(config) interface (Name)
+Switch(config-if)switchmode mode trunk
+optioneel commando, niet altijd beschikbaar op switchesswitch
+Switch(config-if)switchport trunk encapsulation dot1q
+Als je vlans wilt toevoegen aan trunk poort gebruik dit
+switch(config-if)switchport trunk allowed vlan xx,xx
+om te testen of je trunkpoort werkt gebruik:
+Switch#show interfaces trunk
+
+ACL instellen
+Doe dit echt als laatste stap anders gaat misschien je netwerk naar de klote!!!
+R1#config terminal
+R1(config)#ip access-list extended (lijst naam)
+R1(config-ext-nacl)#deny (tcp of udp) 192.168.20.0 0.0.0.255 host 192.168.10.100 eq (poortnummer)
+R1(config-ext-nacl)#permit ip any any
+
+ACL koppelen aan interface
+Switch(config) interface (naam interface)
+Switch (config-if) ip access-group (acl naam) in
+
+ 
+DHCP pools per vlan
+Maak zoveel pools aan als je nodig hebt in dat geval maak er twee aan
+Zorg voor trunk poorten en voeg de vlans die je wilt gebruiken aan router toe
+Switch> enable
+Switch# config terminal
+Switch(config-subif) interface (Name) (nummer.1)
+Switch(config-subif) ip address (IP) (Mask)
+Switch(config-subif) encapsulation dot1q (vlan nummer)
+Switch(config-subif) No shutdown
+Switch(config-subif) end
+Switch(config-subif) interface (Name) (nummer.2)
+Switch(config-subif) ip address (IP) (Mask)
+Switch(config-subif) encapsulation dot1q (vlan nummer)
+No shutdown
+
+Om CDP en LLDP inteschakelen
+Router(config)cdp run
+Router(config)lldp run
+
+Werk Proces 2
+Command prompt
+Ping om connectie te checken
+Ping (IP)
+
+Tracert (IP)
+
+Telnet/ssh om verbinding te  maken met router
+telnet (default gateway)
+ssh -l (username) (ip)
+
+Om verbonden apparaten te ontdekken 
+Arp -a
+ 
+Command Line
+
+Om info over interfaces te vinden
+Router>show interface
+
+Om routes te bekijken (let op ‘via’ voor connecties met andere routers)
+Router>show ip route
+
+Om verbonden apparaten te ontdekken 
+Router>show arp
+
+Werkt een beetje hetzelfde al arp
+Router>Show cdp neighbors detail
+Router>Show lldp 
+
+Om te checken of de start-up config opgeslagen is
+Router>Show flash
