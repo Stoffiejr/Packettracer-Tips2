@@ -1,0 +1,6 @@
+access-list 150 deny ip 10.10.50.0 0.0.0.255 10.10.30.0 0.0.0.255
+access-list 150 deny ip 10.10.50.0 0.0.0.255 10.10.40.0 0.0.0.255
+access-list 150 deny ip 10.10.50.0 0.0.0.255 172.16.10.0 0.0.0.255
+access-list 150 deny ip 10.10.50.0 0.0.0.255 172.16.5.0 0.0.0.255
+access-list 150 deny ip 10.10.50.0 0.0.0.255 172.16.20.0 0.0.0.255
+access-list 150 permit ip any any
